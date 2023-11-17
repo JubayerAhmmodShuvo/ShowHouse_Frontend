@@ -1,8 +1,9 @@
+import HeroSection from "@/components/Main/HeroSection";
 
 const HomePage = () => {
   return (
     <>
-    <h1>hello</h1>
+    <HeroSection />
     </>
   );
 };

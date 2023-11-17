@@ -25,7 +25,7 @@ const Header = () => {
         <div className="relative group">
           <button
             onClick={logOut}
-            className="text-red-500 cursor-pointer bg-transparent hover:bg-red-500  font-semibold hover:text-white py-2 px-4 border border-blue-500 hover:border-transparent rounded"
+            className="text-black cursor-pointer bg-transparent hover:bg-black  font-semibold hover:text-white py-2 px-4 border border-black hover:border-transparent rounded"
           >
             Logout
           </button>
