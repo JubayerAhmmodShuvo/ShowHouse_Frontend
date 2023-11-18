@@ -28,7 +28,7 @@ const DashboardLayout = ({ children }: { children: React.ReactNode }) => {
 
   return (
    
-      <div className="max-w-7xl w-full mx-auto p-8">
+      <div className="max-w-7xl w-full mx-auto mt-5">
         <Header />
       {children}
      <Footer />
