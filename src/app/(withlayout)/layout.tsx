@@ -7,6 +7,7 @@ import { useEffect, useState } from "react";
 import Loading from "../loading";
 import "react-toastify/dist/ReactToastify.css";
 import Header from "@/components/Header";
+import Footer from "@/components/Footer";
 
 const DashboardLayout = ({ children }: { children: React.ReactNode }) => {
   const router = useRouter();
@@ -29,7 +30,8 @@ const DashboardLayout = ({ children }: { children: React.ReactNode }) => {
    
       <div className="max-w-7xl w-full mx-auto p-8">
         <Header />
-        {children}
+      {children}
+     <Footer />
      
     </div>
   );
