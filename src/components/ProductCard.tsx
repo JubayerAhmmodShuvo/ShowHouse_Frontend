@@ -21,9 +21,9 @@ const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
 
   return (
     <div>
-      <div className="bg-white rounded-lg overflow-hidden shadow-lg ring-4 ring-red-500 ring-opacity-40 max-w-sm">
+      <div className="bg-white rounded-lg overflow-hidden shadow-lg ring-4 ring-purple-500 ring-opacity-40 max-w-sm ">
         <div className="relative">
-          <img className="w-full" src={product.image} alt="Product Image" />
+          <img className="w-full " src={product.image} alt="Product Image" />
         </div>
         <div className="p-4">
           <h3 className="text-lg font-medium mb-2">
@@ -33,7 +33,7 @@ const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
             <span className="font-bold text-lg">${product.price || 0}</span>
             <button
               onClick={handleBuyNow}
-              className="bg-purple-500 hover:bg-purple-700 text-white font-bold py-2 px-4 rounded"
+              className="bg-purple-800 hover:bg-purple-600 text-white font-medium py-2 px-4 rounded"
             >
               Buy Now
             </button>
