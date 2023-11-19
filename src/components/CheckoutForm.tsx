@@ -1,44 +1,104 @@
 "use client";
-
+import { useCreatePaymentMutation } from "@/redux/api/paymentApi";
 import { CardElement, useElements, useStripe } from "@stripe/react-stripe-js";
-import axios from "axios";
 import React from "react";
+import { useRouter } from "next/navigation";
+import { toast } from "react-toastify";
+
 interface Product {
   _id: string;
   name: string;
   price: number;
- 
 }
 
-interface PaymentFormProps {
-  product: Product;
+interface PaymentResponse {
+  clientSecret: string | null;
 }
 
-export default function PaymentForm({ product }: PaymentFormProps) {
-  console.log(product.name);
+type ApiResponse<T> = {
+  data?: T | null;
+  error?: unknown;
+};
+
+function generateTransactionId() {
+  const timestamp = new Date().getTime();
+  const randomValue = Math.floor(Math.random() * 1000);
+  return `txn_${timestamp}_${randomValue}`;
+}
+
+export default function PaymentForm({ product }: { product: Product }) {
+  const [paymentInfo, setPaymentInfo] = React.useState({
+    price: 0,
+    name: "",
+    transactionId: "",
+  });
+
+  const [clientSecret, setClientSecret] = React.useState<string | null>(null); 
+  console.log(clientSecret);
+
   const stripe = useStripe();
   const elements = useElements();
+  const router = useRouter();
+  const [createPayment, { isSuccess, isError }] = useCreatePaymentMutation();
+
+  React.useEffect(() => {
+    if (product) {
+      setPaymentInfo({
+        price: product.price,
+        name: product.name,
+        transactionId: generateTransactionId(),
+      });
+    }
+  }, [product]);
 
   const onSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     const cardElement = elements?.getElement("card");
-    console.log(cardElement);
+    console.log("Payment Info:", paymentInfo);
 
     try {
       if (!stripe || !cardElement) return null;
-      const { data } = await axios.post("/api/create-payment-intent", {
-        data: { amount: 89 },
-      });
-      const clientSecret = data;
 
-      await stripe?.confirmCardPayment(clientSecret, {
-        payment_method: { card: cardElement },
+      const response: ApiResponse<PaymentResponse> = await createPayment({
+        data: paymentInfo,
       });
+
+      const client_secret = response?.data?.clientSecret;
+
+      if (client_secret !== null && client_secret !== undefined) {
+        console.log("Client Secret:", client_secret);
+        setClientSecret(client_secret);
+
+        const { paymentIntent, error: confirmError } =
+          await stripe.confirmCardPayment(client_secret, {
+            payment_method: {
+              card: cardElement,
+            },
+          });
+
+        console.log("Confirm Payment Response:", paymentIntent);
+
+        if (confirmError) {
+          console.error("Failed to confirm payment:", confirmError);
+          toast.error("Payment failed.");
+        } else {
+          console.log("Payment confirmed:", paymentIntent);
+          toast.success("Payment successful!");
+
+          const transactionId = paymentIntent.id;
+          console.log("Transaction ID:", transactionId);
+        }
+      } else {
+        console.error(
+          "Failed to create payment. Missing client_secret in the response:",
+          response
+        );
+        toast.error("Payment failed.");
+      }
     } catch (error) {
-      console.log(error);
+      console.error("Error:", error);
     }
   };
-  console.log(onSubmit);
 
   return (
     <form onSubmit={onSubmit} className="text-center">
@@ -69,4 +129,3 @@ export default function PaymentForm({ product }: PaymentFormProps) {
     </form>
   );
 }
-
