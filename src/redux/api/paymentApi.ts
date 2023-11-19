@@ -1,16 +1,6 @@
-
 import { baseApi } from "./baseApi";
 
 const Payment_URL = "/payment";
-
-interface PaymentResponse {
-  clientSecret: string | null;
-}
-
-type ApiResponse<T> = {
-  data?: T | null;
-  error?: unknown;
-};
 
 export const paymentApi = baseApi.injectEndpoints({
   endpoints: (build) => ({
@@ -20,9 +10,7 @@ export const paymentApi = baseApi.injectEndpoints({
         method: "POST",
         data,
       }),
-    
     }),
-    
   }),
 });
 
