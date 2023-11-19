@@ -1,9 +1,10 @@
 "use client";
-import { useCreatePaymentMutation } from "@/redux/api/paymentApi";
+import React, { useEffect, useState } from "react";
 import { CardElement, useElements, useStripe } from "@stripe/react-stripe-js";
-import React from "react";
-import { useRouter } from "next/navigation";
+import { useRouter } from "next/router";
 import { toast } from "react-toastify";
+import { useCreatePaymentMutation } from "@/redux/api/paymentApi";
+import { getUserInfo } from "@/services/auth.service";
 
 interface Product {
   _id: string;
@@ -27,21 +28,20 @@ function generateTransactionId() {
 }
 
 export default function PaymentForm({ product }: { product: Product }) {
-  const [paymentInfo, setPaymentInfo] = React.useState({
+  const [paymentInfo, setPaymentInfo] = useState({
     price: 0,
     name: "",
     transactionId: "",
   });
 
-  const [clientSecret, setClientSecret] = React.useState<string | null>(null); 
-  console.log(clientSecret);
-
   const stripe = useStripe();
   const elements = useElements();
-  const router = useRouter();
+ // const router = useRouter();
   const [createPayment, { isSuccess, isError }] = useCreatePaymentMutation();
 
-  React.useEffect(() => {
+  const { role, name,email } = getUserInfo() as any;
+
+  useEffect(() => {
     if (product) {
       setPaymentInfo({
         price: product.price,
@@ -57,43 +57,59 @@ export default function PaymentForm({ product }: { product: Product }) {
     console.log("Payment Info:", paymentInfo);
 
     try {
-      if (!stripe || !cardElement) return null;
+      if (!stripe || !cardElement) return;
+        const userInfo = getUserInfo() as any;
+        setPaymentInfo({
+          ...paymentInfo,
+          name: userInfo.name,
+       //   email: userInfo.email,
+        });
+
 
       const response: ApiResponse<PaymentResponse> = await createPayment({
         data: paymentInfo,
       });
+      console.log("Full API Response:", response);
 
-      const client_secret = response?.data?.clientSecret;
+      if (!response) {
+        console.error("API response is null or undefined");
+        return;
+      }
 
-      if (client_secret !== null && client_secret !== undefined) {
-        console.log("Client Secret:", client_secret);
-        setClientSecret(client_secret);
-
-        const { paymentIntent, error: confirmError } =
-          await stripe.confirmCardPayment(client_secret, {
-            payment_method: {
-              card: cardElement,
-            },
-          });
-
-        console.log("Confirm Payment Response:", paymentIntent);
-
-        if (confirmError) {
-          console.error("Failed to confirm payment:", confirmError);
-          toast.error("Payment failed.");
-        } else {
-          console.log("Payment confirmed:", paymentIntent);
-          toast.success("Payment successful!");
-
-          const transactionId = paymentIntent.id;
-          console.log("Transaction ID:", transactionId);
-        }
-      } else {
-        console.error(
-          "Failed to create payment. Missing client_secret in the response:",
-          response
-        );
+      if (response.error) {
+        console.error("API error:", response.error);
         toast.error("Payment failed.");
+        return;
+      }
+
+      const client_secret = response.data?.clientSecret;
+
+      if (!client_secret) {
+        console.error("Client secret is missing in the response");
+        toast.error("Payment failed.");
+        return;
+      }
+
+      console.log("Client Secret:", client_secret);
+
+      const { paymentIntent, error: confirmError } =
+        await stripe.confirmCardPayment(client_secret, {
+          payment_method: {
+            card: cardElement,
+          },
+        });
+
+      console.log("Confirm Payment Response:", paymentIntent);
+
+      if (confirmError) {
+        console.error("Failed to confirm payment:", confirmError);
+        toast.error("Payment failed.");
+      } else {
+        console.log("Payment confirmed:", paymentIntent);
+        toast.success("Payment successful!");
+
+        const transactionId = paymentIntent.id;
+        console.log("Transaction ID:", transactionId);
       }
     } catch (error) {
       console.error("Error:", error);
@@ -122,6 +138,7 @@ export default function PaymentForm({ product }: { product: Product }) {
         <button
           className="bg-purple-800 hover:bg-purple-600 text-white font-medium py-2 px-4 rounded w-48 mt-16"
           type="submit"
+          disabled={isSuccess || isError}
         >
           Pay
         </button>

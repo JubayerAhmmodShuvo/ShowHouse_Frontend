@@ -1,27 +1,28 @@
 
 import { baseApi } from "./baseApi";
 
-interface PaymentResponse {
-  clientSecret: string | null; 
-}
-
-interface PaymentInfo {
-  price: number;
-  name: string;
-  transactionId: string;
-}
-
 const Payment_URL = "/payment";
+
+interface PaymentResponse {
+  clientSecret: string | null;
+}
+
+type ApiResponse<T> = {
+  data?: T | null;
+  error?: unknown;
+};
 
 export const paymentApi = baseApi.injectEndpoints({
   endpoints: (build) => ({
-    createPayment: build.mutation<PaymentResponse, { data: PaymentInfo }>({
+    createPayment: build.mutation({
       query: (data) => ({
         url: `${Payment_URL}/create-payment`,
         method: "POST",
         data,
       }),
+    
     }),
+    
   }),
 });
 
