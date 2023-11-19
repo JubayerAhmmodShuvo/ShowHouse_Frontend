@@ -53,9 +53,9 @@ export default function PaymentForm({ product }: { product: Product }) {
   };
 
   return (
-    <div>
+    <div className="flex justify-center ">
       <button
-        className="bg-purple-800 hover:bg-purple-600 text-white font-medium py-2 px-4 rounded w-48 mt-16"
+        className="bg-purple-800 hover:bg-purple-600 text-white font-medium py-2 px-4 rounded  w-48 mt-2"
         onClick={() => onSubmit(product)}
       >
         Checkout
