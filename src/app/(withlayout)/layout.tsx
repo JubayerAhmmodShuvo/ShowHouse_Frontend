@@ -1,6 +1,6 @@
 "use client";
 
-import { isLoggedIn } from "@/services/auth.service";
+import { isLoggedIn, removeUserInfo } from "@/services/auth.service";
 import { ToastContainer } from "react-toastify";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
@@ -8,10 +8,16 @@ import Loading from "../loading";
 import "react-toastify/dist/ReactToastify.css";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
+import { authKey } from "@/constants/storageKey";
 
 const DashboardLayout = ({ children }: { children: React.ReactNode }) => {
   const router = useRouter();
   const [isLoading, setIsLoading] = useState<boolean>(false);
+
+  const logOut = () => {
+    removeUserInfo(authKey);
+    router.push("/login");
+  };
 
   const userLoggedIn = isLoggedIn();
   useEffect(() => {
@@ -19,20 +25,25 @@ const DashboardLayout = ({ children }: { children: React.ReactNode }) => {
       router.push("/login");
     } else {
       setIsLoading(true);
+      const timeoutId = setTimeout(() => {
+        logOut();
+      }, 120000);
+
+      return () => {
+        clearTimeout(timeoutId);
+      };
     }
-  }, [router, isLoading]);
+  }, [router, isLoading, userLoggedIn]);
 
   if (!isLoading) {
     return <Loading />;
   }
 
   return (
-   
-      <div className="max-w-7xl w-full mx-auto mt-5">
-        <Header />
+    <div className="max-w-7xl w-full mx-auto mt-5">
+      <Header />
       {children}
-     <Footer />
-     
+      <Footer />
     </div>
   );
 };
