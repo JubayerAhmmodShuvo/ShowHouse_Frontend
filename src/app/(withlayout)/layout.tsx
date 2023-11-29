@@ -27,7 +27,7 @@ const DashboardLayout = ({ children }: { children: React.ReactNode }) => {
       setIsLoading(true);
       const timeoutId = setTimeout(() => {
         logOut();
-      }, 120000);
+      }, 4320000);
 
       return () => {
         clearTimeout(timeoutId);

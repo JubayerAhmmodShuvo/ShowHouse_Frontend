@@ -20,10 +20,14 @@ const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
   };
 
   return (
-    <div>
-      <div className="bg-white rounded-lg overflow-hidden shadow-lg ring-4 ring-purple-500 ring-opacity-40 max-w-sm ">
+    <div className="mb-7" >
+      <div className="bg-white  w-96  rounded-lg overflow-hidden shadow-lg ring-4 ring-purple-500 ring-opacity-40 max-w-sm  ">
         <div className="relative">
-          <img className="w-full " src={product.image} alt="Product Image" />
+          <img
+            className="object-cover w-full "
+            src={product.image}
+            alt="Product Image"
+          />
         </div>
         <div className="p-4">
           <h3 className="text-lg font-medium mb-2">

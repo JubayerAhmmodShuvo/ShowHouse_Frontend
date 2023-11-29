@@ -19,7 +19,7 @@ const ShowProduct = () => {
     <div className="my-10 mx-auto ">
       <h1 className='text-center my-8 text-purple-700 font-serif font-bold text-2xl ' >Products</h1>
       {products && products?.length > 0 ? (
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 gap-5 justify-items-center">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5 justify-items-center">
           {products?.map(
             (product: {
               _id?: string;
