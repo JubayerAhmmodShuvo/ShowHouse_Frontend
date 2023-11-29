@@ -42,12 +42,9 @@ const LoginPage = () => {
   };
 
   return (
-    <div className="flex flex-col md:flex-row justify-center items-center max-w-screen min-h-screen">
-      <div className="md:w-full lg:w-1/2  text-center md:text-left p-8">
-        <Image src={loginImage} width={350} alt="login image" />
-      </div>
-      <div className="md:w-1/2 lg:w-2/3 p-8">
-        <h1 className="text-2xl text-center text-blue-500 font-bold mb-4">
+    <div className="flex items-center justify-center min-h-screen overflow-x-hidden ">
+      <div className="bg-purple-50   shadow-inherit w-full max-w-md sm:w-full p-8 rounded-lg ">
+        <h1 className="text-2xl  font-bold mb-4 text-center">
           First Login In Your Account
         </h1>
         <div className="mb-4">
@@ -59,8 +56,8 @@ const LoginPage = () => {
                 size="large"
                 label="User Email"
                 required
-                disabled={false} 
-                className="w-full py-2 px-3 bg-gray-100 text-lg rounded-md" 
+                disabled={false}
+                className="w-full py-3 px-3 text-black bg-white text-sm rounded-md"
               />
             </div>
             <div className="mb-4 w-full">
@@ -71,21 +68,21 @@ const LoginPage = () => {
                 label="User Password"
                 required
                 disabled={false}
-                className="w-full py-2 px-3 bg-gray-100 text-lg rounded-md"
+                className="w-full py-3 px-3 bg-white text-sm rounded-md"
               />
             </div>
             <button
-              className="w-full py-3 px-4 bg-blue-500 text-white rounded-md font-semibold"
+              className="w-full py-3 px-4 bg-purple-500 hover:bg-purple-800  text-white rounded-md font-semibold"
               type="submit"
             >
               Login
             </button>
           </Form>
         </div>
-        <p style={{ textAlign: "center", fontSize: "20px" }}>
-          Don&rsquo;t have an account? Please
+        <p style={{ fontSize: "20px" }}>
+          Don&rsquo;t have an account? Please{" "}
           <Link href="/signup">
-            <p className="text-blue-500">SignUp</p>
+            <span className="text-purple-500 cursor-pointer"> SignUp</span>
           </Link>
           .
         </p>
