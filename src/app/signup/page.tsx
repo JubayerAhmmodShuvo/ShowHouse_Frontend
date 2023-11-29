@@ -2,7 +2,7 @@ import SignupPage from "@/components/SignUp/SignUp";
 import { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "Task Management  | SignUp",
+  title: "Shoe House | SignUp",
 };
 
 
