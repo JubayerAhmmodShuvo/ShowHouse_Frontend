@@ -60,13 +60,12 @@ const Delivery = () => {
           </h1>
           <Image
             src={Man}
-            
             alt="stew"
             width={300}
             height={250}
             className="w-full lg:h-96 md:h-72 object-cover hover:animate-bounce"
           />
-        
+
           <p className="text-justify p-6 text-lg">
             We are now living in an era where we can easily reach any corner of
             the city any time with our delivery man and stock items for business

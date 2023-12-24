@@ -4,11 +4,8 @@ import { useRouter } from "next/navigation";
 import React, { useState } from "react";
 import Link from "next/link";
 
-
-
 const Header = () => {
   const router = useRouter();
-
 
   const logOut = () => {
     removeUserInfo(authKey);
@@ -16,7 +13,6 @@ const Header = () => {
   };
 
   const { role, name } = getUserInfo() as any;
-
 
   return (
     <header className="bg-white">

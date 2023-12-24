@@ -27,7 +27,6 @@ const FormTextArea = ({
         name={name}
         render={({ field }) => (
           <textarea
-           
             rows={rows}
             placeholder={placeholder}
             className={`p-2 rounded-md border border-gray-300 focus:outline-none focus:border-blue-500 ${

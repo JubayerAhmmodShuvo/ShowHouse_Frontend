@@ -1,10 +1,10 @@
 "use client";
-import React from 'react';
+import React from "react";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { useRouter } from "next/navigation";
-import { useGetAllProductsQuery } from '@/redux/api/productsApi';
-import ProductCard from './ProductCard';
+import { useGetAllProductsQuery } from "@/redux/api/productsApi";
+import ProductCard from "./ProductCard";
 
 const ShowProduct = () => {
   const router = useRouter();
@@ -17,7 +17,9 @@ const ShowProduct = () => {
   );
   return (
     <div className="my-10 mx-auto ">
-      <h1 className='text-center my-8 text-purple-700 font-serif font-bold text-2xl ' >Products</h1>
+      <h1 className="text-center my-8 text-purple-700 font-serif font-bold text-2xl ">
+        Products
+      </h1>
       {products && products?.length > 0 ? (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5 justify-items-center">
           {products?.map(

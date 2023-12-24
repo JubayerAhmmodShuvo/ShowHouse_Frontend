@@ -40,7 +40,7 @@ const FormInput = ({
 
   return (
     <div className="mb-4">
-     {required ? (
+      {required ? (
         <span
           style={{
             color: "red",
